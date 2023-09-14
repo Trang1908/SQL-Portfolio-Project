@@ -1,6 +1,6 @@
 --- Read the dataset
 SELECT *
-FROM NashVilleHousing
+FROM NashVilleHousing;
 
 
 --------------------------------
@@ -8,14 +8,14 @@ FROM NashVilleHousing
 
 --- Create a new column named 'SaleDateConverted' 
 ALTER TABLE NashVilleHousing
-ADD SaleDateConverted DATE
+ADD SaleDateConverted DATE;
 
 UPDATE NashVilleHousing
-SET SaleDateConverted = CONVERT(DATE, SaleDate)
+SET SaleDateConverted = CONVERT(DATE, SaleDate);
 
 --- Delete unused column 'SaleDate'
 ALTER TABLE NashVilleHousing
-DROP COLUMN SaleDate
+DROP COLUMN SaleDate;
 
 
 --------------------------------
@@ -24,7 +24,7 @@ DROP COLUMN SaleDate
 --- Check any relationship between 'ParcelID' and 'PropertyAddress'
 SELECT *
 FROM NashVilleHousing
-ORDER BY ParcelID
+ORDER BY ParcelID;
 
 --- Check any NULL values of column 'PropertyAddress'
 SELECT a.ParcelID, a.PropertyAddress, b.ParcelID, b.PropertyAddress,
@@ -33,7 +33,7 @@ FROM NashVilleHousing a
 INNER JOIN NashVilleHousing b
 	ON a.ParcelID = b.ParcelID
 	AND a.[UniqueID ] <> b.[UniqueID ]
-WHERE a.PropertyAddress IS NULL
+WHERE a.PropertyAddress IS NULL;
 
 UPDATE a
 SET PropertyAddress = ISNULL(a.PropertyAddress, b.PropertyAddress)
@@ -41,24 +41,24 @@ FROM NashVilleHousing a
 INNER JOIN NashVilleHousing b
 	ON a.ParcelID = b.ParcelID
 	AND a.[UniqueID ] <> b.[UniqueID ]
-WHERE a.PropertyAddress IS NULL
+WHERE a.PropertyAddress IS NULL;
 
 
 --------------------------------
 --- Break column 'PropertyAddress' into individual columns (Address and City)
 
 ALTER TABLE NashVilleHousing
-ADD PropertyAddressSplit VARCHAR(123)
+ADD PropertyAddressSplit VARCHAR(123);
 
 UPDATE NashVilleHousing
-SET PropertyAddressSplit = SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) -1)
+SET PropertyAddressSplit = SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) -1);
 
 ALTER TABLE NashVilleHousing
-ADD PropertyCity VARCHAR(123)
+ADD PropertyCity VARCHAR(123);
 
 UPDATE NashVilleHousing
 SET PropertyCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) +1,
-LEN(PropertyAddress))
+LEN(PropertyAddress));
 
 
 --------------------------------------
@@ -66,16 +66,16 @@ LEN(PropertyAddress))
 ALTER TABLE NashVilleHousing
 ADD OwnerAddressSplit VARCHAR(123),
 OwnerCity VARCHAR(123),
-OwnerState VARCHAR(123)
+OwnerState VARCHAR(123);
 
 UPDATE NashVilleHousing
 SET OwnerAddressSplit = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 3),
 OwnerCity = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 2),
-OwnerState = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 1)
+OwnerState = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 1);
 
 --- Drop unused column 'OwnerAddress'
 ALTER TABLE NashVilleHousing
-DROP COLUMN OwnerAddress
+DROP COLUMN OwnerAddress;
 
 
 -------------------------------------------
@@ -83,7 +83,7 @@ DROP COLUMN OwnerAddress
 SELECT DISTINCT(SoldAsVacant), COUNT(SoldAsVacant)
 FROM NashVilleHousing
 GROUP BY SoldAsVacant
-ORDER BY 2
+ORDER BY 2;
 
 --- Change 'Y' and 'N' values into 'Yes' and 'No' in 'SoldAsVacant' column
 SELECT SoldAsVacant,
@@ -92,7 +92,7 @@ CASE
 	WHEN SoldAsVacant = 'N' THEN 'No'
 	ELSE SoldAsVacant
 END
-FROM NashVilleHousing
+FROM NashVilleHousing;
 
 UPDATE NashVilleHousing
 SET SoldAsVacant = 
@@ -100,7 +100,7 @@ CASE
 	WHEN SoldAsVacant = 'Y' THEN 'Yes'
 	WHEN SoldAsVacant = 'N' THEN 'No'
 	ELSE SoldAsVacant
-END
+END;
 
 
 -------------------------------------------------
@@ -123,4 +123,4 @@ FROM NashVilleHousing
 SELECT *
 FROM RowNumCTE
 WHERE row_num > 1
-ORDER BY PropertyAddress
+ORDER BY PropertyAddress;
