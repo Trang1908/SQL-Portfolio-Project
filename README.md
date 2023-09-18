@@ -6,3 +6,4 @@ These projects showcase my skills and experience with SQL, covering a variety of
 
 # Projects included
 1. Data cleaning with "Nashville Housing data".
+2. Create a table named "client_data" and perform some basic schema operations, including INSERT, ALTER, UPDATE, and DROP.
